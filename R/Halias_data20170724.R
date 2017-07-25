@@ -1,16 +1,28 @@
-# Haliasaineisto
+# install.packages("devtools")
+# devtools::install_github("hadley/colformat")
+# devtools::install_github("ropenscilabs/skimr")
 
-Halias=read.csv(file.choose()) # Hae csv-tiedosto / choose the csv-file
-str(Halias) # aineiston rakenne / structure of the data
+library(skimr)
+library(tidyverse)
+
+# !!!NOTE!!! Original data CSV's encoding is not set, run fix script first
+source("R/fix_data.R")
+
+# Haliasaineisto
+# 
+# Hae csv-tiedosto / choose the csv-file
+Halias <- readr::read_csv("data/Kokodata_20161025_20170724_fixed.csv") 
+# aineiston rakenne / structure of the data
+skim(Halias)
 
 # Tuotetaan csv-tiedosto, jossa asemalla havaittujen lajien ja lajiryhmien lista / Produces a csv-file...
 # including a list of all the observed species and species groups 
-Halias_sp=unique(Halias$Species_Abb) 
-write.csv(Halias_sp,"Halias_sp.csv") 
+Halias_sp <- sort(unique(Halias$Species_Abb))
+readr::write_csv(data.frame(spp = Halias_sp), "data/Halias_sp.csv") 
 
 # Valitse laji ja kirjoita se lainausmerkkien sisään (tässä tukkasotka AYTFUL).
 # Choose a species and write it between the quotation marks (here tufted duck AYTFUL).
-sp=c("AYTFUL") # TÄHÄN KANNATTAA VALITA MAHDOLLISIMMAN RAFLAAVA LAJI
+sp <- c("AYTFUL") # TÄHÄN KANNATTAA VALITA MAHDOLLISIMMAN RAFLAAVA LAJI
 
 # Seuraava käskyjoukko tuottaa kolmiosaisen kuvaajan, jossa ylin kuvaaja kertoo paikallismäärien
 # vaihtelun vuoden aikana ja keskimmäinen muuttajien vastaavan vaihtelun. Kuvaajissa x-akselilla on
