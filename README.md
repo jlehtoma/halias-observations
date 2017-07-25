@@ -6,7 +6,7 @@
 
 Lintuaseman aineistosta on avoimesti ladattavissa päiväkohtaiset lajisummat aseman aloituksesta vuodesta 1979 lähtien eri havainnointitavoittain: paikalliset, muutto, vakiomuutonhavainnointi, lisäalueen paikalliset sekä yömuutto. Aineisto on zip-tiedossa, ja sen voi ladata alla olevasta linkistä. Aineisto voi käyttää vapaasti kun siihen viitataan oikealla tavalla:  
 
-Tringa society (2017) Data of the Hanko Bird Observatory: day counts. Available at URL. <Downloaded on Date-Month-Year>. 
++ Tringa society (2017) Data of the Hanko Bird Observatory: day counts. Available at URL. <Downloaded on Date-Month-Year>. 
 
 Aineistonkeruumenetelmät on kuvattu julkaisussa Lehikoinen & Vähätalo (2000) ja Vähätalo ym. (2004). Aineiston tarjoaja ei ota vastuuta aineiston analysointitavasta tai mahdollisesti aineistossa olevista tallennusvirheistä. Aineiston käyttöön liittyvistä kysymyksistä ota yhteyttä osoitteeseen halias@tringa.fi. Mikäli aineistosta tuotetaan julkaisu, pyydetään siitä lähettämään kopio samaan osoitteeseen pdf-muodossa tai postitse osoitteeseen: 
 
@@ -47,5 +47,5 @@ Tiedostossa on yhteensä 15 saraketta:
 
 ## Kirjallisuus
 
-Lehikoinen, A. & Vähätalo, A. 2000: Lintujen muuton ajoittuminen Hangon lintuasemalla vuosina 1979–1999. — Tringa 27: 150–227.
-Vähätalo, A. V., Rainio, K., Lehikoinen, A. & Lehikoinen, E. 2004: Spring arrival of birds depends on the North Atlantic Oscillation. — Journal of Avian Biology 35: 210–216.
++ Lehikoinen, A. & Vähätalo, A. 2000: Lintujen muuton ajoittuminen Hangon lintuasemalla vuosina 1979–1999. — Tringa 27: 150–227.
++ Vähätalo, A. V., Rainio, K., Lehikoinen, A. & Lehikoinen, E. 2004: Spring arrival of birds depends on the North Atlantic Oscillation. — Journal of Avian Biology 35: 210–216.
