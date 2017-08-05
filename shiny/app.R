@@ -1,8 +1,10 @@
+library(dplyr)
 library(ggplot2)
 library(gridExtra)
 library(Hmisc)
 library(scales)
 library(shinydashboard)
+library(tidyr)
 
 load("sp_yearly.RData")
 spps <- Hmisc::capitalize(sort(unique(dat$sp)))
