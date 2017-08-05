@@ -1,3 +1,9 @@
+## 1.2 (2017-09-04)
+
+- Adapted Aksu's new code and data
+- Use ggplot2 for plotting
+- Use shiny for a simple web app
+
 ## 1.1 (2017-07-25)
 
 - Placed CSV file in a subfolder `data`.
