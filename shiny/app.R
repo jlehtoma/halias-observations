@@ -4,7 +4,7 @@ library(Hmisc)
 library(scales)
 library(shinydashboard)
 
-load("../data/sp_yearly.RData")
+load("sp_yearly.RData")
 spps <- Hmisc::capitalize(sort(unique(dat$sp)))
 
 ui <- dashboardPage(

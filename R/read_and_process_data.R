@@ -111,4 +111,4 @@ dat <- Halias_sp %>%
   purrr::map(process_sp) %>% 
   dplyr::bind_rows()
 
-save(dat, file = "data/sp_yearly.RData")
+save(dat, file = "shiny/sp_yearly.RData")
