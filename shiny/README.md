@@ -1,6 +1,6 @@
 ## Running the shiny app
 
-Using RStudio project (i.e. running from the project root):
+**NOTE**: The actual data (not in this repo) needs to be in `data` directory before running the processing script. Using RStudio project (i.e. running from the project root):
 
 ```
 # This will take some time
