@@ -19,7 +19,8 @@ ui <- dashboardPage(
           box(
             width = 12,
             title = "Controls",
-            selectInput("selector", "Select species", choices = spps)
+            selectInput("selector", "Select species", choices = spps),
+            checkboxInput("fixy", "Fix y-axis")
           ),
           box(
             width = 12,
