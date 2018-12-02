@@ -1,7 +1,8 @@
 # Haliasaineisto
 
 # Hae csv-tiedosto / choose the csv-file
-Halias <- read.csv(file.choose(), fileEncoding="macintosh")
+Halias <- read.csv("data/1.1/Haliasdata_v1.1.csv", 
+                   fileEncoding = "macintosh")
 str(Halias) # aineiston rakenne / structure of the data
 
 # Tuotetaan csv-tiedosto, jossa asemalla havaittujen lajien ja lajiryhmien lista / Produces a csv-file...
@@ -9,7 +10,7 @@ str(Halias) # aineiston rakenne / structure of the data
 #Halias_sp <- unique(Halias$Species_Abb)
 #write.csv(Halias_sp, "Halias_sp.csv")
 
-Halias_sp=read.csv(file.choose())
+Halias_sp <- read.csv("data/Halias_sp_v1.2.csv")
 #sp_species=unique(as.character(Halias_sp[which(Halias_sp$Sp==0),5]))
 
 #sp_species=as.data.frame(sp_species)
