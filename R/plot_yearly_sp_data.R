@@ -6,7 +6,7 @@ library(tidyverse)
 # Read in data ------------------------------------------------------------
 
 # Load data. The relevant object is called "dat"
-load("data/sp_yearly.RData")
+load("shiny/sp_yearly.RData")
 
 # Select only one spcecies
 spSCI <- "kaakkuri"
