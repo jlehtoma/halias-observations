@@ -1,3 +1,5 @@
+library(tidyverse)
+
 # Haliasaineisto
 
 # Hae csv-tiedosto / choose the csv-file
@@ -7,8 +9,8 @@ str(Halias) # aineiston rakenne / structure of the data
 
 # Tuotetaan csv-tiedosto, jossa asemalla havaittujen lajien ja lajiryhmien lista / Produces a csv-file...
 # including a list of all the observed species and species groups
-#Halias_sp <- unique(Halias$Species_Abb)
-#write.csv(Halias_sp, "Halias_sp.csv")
+Halias_sp <- unique(Halias$Species_Abb)
+write.csv(Halias_sp, "data/Halias_sp.csv")
 
 Halias_sp <- read.csv("data/Halias_sp_v1.2.csv")
 #sp_species=unique(as.character(Halias_sp[which(Halias_sp$Sp==0),5]))
@@ -20,7 +22,7 @@ Halias_sp <- read.csv("data/Halias_sp_v1.2.csv")
 #  }
 #}
 
-sp_species=read.csv(file.choose())
+sp_species <- read.csv(file.choose())
   
 #Halias=Halias[1:572034,]
 Halias$spLocal=Halias$Local
