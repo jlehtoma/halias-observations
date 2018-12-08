@@ -1,5 +1,6 @@
-library(tidyverse)
+library(progress)
 library(skimr)
+library(tidyverse)
 # Haliasaineisto
 
 # Haetaan varsinainen aineiston csv-tiedosto / choose the csv-file
@@ -39,8 +40,16 @@ taxon <- unique(as.character(sp_species$Taxon))
 
 # Käy läpi kaikki määrittämättömät taksonit ja lisätään nämä määritettyihin näiden määritysosuuksien
 # mukaan, tämä looppi kestää useita tunteja
+
+# Set up the progress bar
+pb <- progress::progress_bar$new(
+  format = "  processing :taxon [:bar] :percent in :elapsed",
+  total = length(taxon), clear = FALSE, width = 60)
+
 for (i in 1:length(taxon)) {
-  # for(i in 1:1){
+
+  pb$tick(tokens = list(taxon = paste0(taxon[i], "  ")))
+  
   apu <- sp_species[which(sp_species$Taxon == taxon[i]), ]
 
   sp_loc <- Halias[which(Halias$Species_Abb == taxon[i] & Halias$Local > 0), ]
