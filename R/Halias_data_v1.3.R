@@ -1,3 +1,4 @@
+library(tidyverse)
 # Haliasaineisto
 
 # Haetaan varsinainen aineiston csv-tiedosto / choose the csv-file
