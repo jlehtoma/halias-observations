@@ -21,14 +21,14 @@ Halias_sp <- read.csv("data/1.1/Halias_sp_v1.2.csv") # Halias_sp_v1.2.csv
 # Haetaan tiedosto, jossa kerrottu mihin lajeihin lajilleen määrittämättömät taksonit voidaan yhdistää
 sp_species <- read.csv("data/1.1/Sp_species_1.1.csv") # Sp_species_1.1.csv
   
-Halias$spLocal=Halias$Local
-Halias$spMigr=Halias$Migr
-Halias$spStand=Halias$Stand
+Halias$spLocal <- Halias$Local
+Halias$spMigr <- Halias$Migr
+Halias$spStand <- Halias$Stand
 
 #Halias$Migr=Halias$spMigr
 #Halias$Local=Halias$spLocal
 
-taxon=unique(as.character(sp_species$Taxon))
+taxon <- unique(as.character(sp_species$Taxon))
 
 #taxN=data.frame(taxon)
 #for(i in 1:length(taxon)){
