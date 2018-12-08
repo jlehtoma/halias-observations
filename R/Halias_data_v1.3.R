@@ -1,18 +1,11 @@
-library(tidyverse)
-
 # Haliasaineisto
 
-# Hae csv-tiedosto / choose the csv-file
-Halias <- read.csv("data/1.1/Haliasdata_v1.1.csv", 
-                   fileEncoding = "macintosh")
+# Haetaan varsinainen aineiston csv-tiedosto / choose the csv-file
+Halias <- read.csv(file.choose(), fileEncoding="macintosh") # Haliasdata_v1.1.csv
 str(Halias) # aineiston rakenne / structure of the data
 
-# Tuotetaan csv-tiedosto, jossa asemalla havaittujen lajien ja lajiryhmien lista / Produces a csv-file...
-# including a list of all the observed species and species groups
-Halias_sp <- unique(Halias$Species_Abb)
-write.csv(Halias_sp, "data/Halias_sp.csv")
-
-Halias_sp <- read.csv("data/Halias_sp_v1.2.csv")
+# Haetaan lajeista ja niiden lisätiedoista koostuva tiedosto
+Halias_sp=read.csv(file.choose()) # Halias_sp_v1.2.csv
 #sp_species=unique(as.character(Halias_sp[which(Halias_sp$Sp==0),5]))
 
 #sp_species=as.data.frame(sp_species)
@@ -22,9 +15,9 @@ Halias_sp <- read.csv("data/Halias_sp_v1.2.csv")
 #  }
 #}
 
-sp_species <- read.csv(file.choose())
+# Haetaan tiedosto, jossa kerrottu mihin lajeihin lajilleen määrittämättömät taksonit voidaan yhdistää
+sp_species=read.csv(file.choose()) # Sp_species_1.1.csv
   
-#Halias=Halias[1:572034,]
 Halias$spLocal=Halias$Local
 Halias$spMigr=Halias$Migr
 Halias$spStand=Halias$Stand
@@ -40,7 +33,8 @@ taxon=unique(as.character(sp_species$Taxon))
 #taxN$Nm[i]=nrow(Halias[which(Halias$Species_Abb==taxon[i] & Halias$Migr>0),])
 #}
 
-# Käy läpi kaikki määrittämättömät taksonit
+# Käy läpi kaikki määrittämättömät taksonit ja lisätään nämä määritettyihin näiden määritysosuuksien 
+# mukaan, tämä looppi kestää useita tunteja
 for(i in 1:length(taxon)){
 #for(i in 1:1){ 
   apu=sp_species[which(sp_species$Taxon==taxon[i]),]
@@ -392,6 +386,7 @@ autumn=matrix(NA,nrow=0,ncol=2)
 colnames(autumn)=c("sp","date")
 
 setwd("/users/aleksilehikoinen/R/Halias")
+
 
 for(l in 1:nrow(Halias_SP)){
 #for(l in 1:1){
@@ -798,46 +793,60 @@ if(sum(Phen$begin[Halias_SP$AuB[l]:366],na.rm=TRUE)>1 &
     trend$Nbegin[l]=N$begin
     trend$Nmed[l]=N$med
     trend$Nend[l]=N$end
+    trend$NbeginS[l]=sum(phen$begin[Halias_SP$SpB[l]:Halias_SP$SpE[l]],na.rm=TRUE)
+    trend$NmedS[l]=sum(phen$med[Halias_SP$SpB[l]:Halias_SP$SpE[l]])
+    trend$NendS[l]=sum(phen$end[Halias_SP$SpB[l]:Halias_SP$SpE[l]])
+    trend$NbeginA[l]=sum(phen$begin[Halias_SP$AuB[l]:335],na.rm=TRUE)
+    trend$NmedA[l]=sum(phen$med[Halias_SP$AuB[l]:335])
+    trend$NendA[l]=sum(phen$end[Halias_SP$AuB[l]:335])
   }
   
 }
 
+#trend=as.data.frame(trend)
+#write.csv(trend,"Halias_trend20181205.csv")
+
+#plot(log(trend$NendA[which(trend$NbeginS>1 & trend$NbeginA>1)]/trend$NmedA[which(trend$NbeginS>1 & trend$NbeginA>1)]),
+#     log(trend$Nend[which(trend$NbeginS>1 & trend$NbeginA>1)]/trend$Nmed[which(trend$NbeginS>1 & trend$NbeginA>1)]))
+
+############# Kuvaajien piirtäminen loppuu ##############
+
 
 ## Annual sums
-nsum=c(1979:2017)
-nsum=as.data.frame(nsum)
-nsum$sum=NA
-for(i in 1979:2017){
-  nsum$sum[i-1978]=sum(Halias$Migr[which(Halias$Year==i & Halias$Species_Abb=="PICCAN" & Halias$Day.of.Year>180)])
-                  +sum(Halias$Paik[which(Halias$Year==i & Halias$Species_Abb=="PICCAN" & Halias$Day.of.Year>180)])
-}
+#nsum=c(1979:2017)
+#nsum=as.data.frame(nsum)
+#nsum$sum=NA
+#for(i in 1979:2017){
+#  nsum$sum[i-1978]=sum(Halias$Migr[which(Halias$Year==i & Halias$Species_Abb=="PICCAN" & Halias$Day.of.Year>180)])
+#                  +sum(Halias$Paik[which(Halias$Year==i & Halias$Species_Abb=="PICCAN" & Halias$Day.of.Year>180)])
+#}
 
 
 ### Percentiles of phenology
 
 
-psp="SYLBOR"
-T1=1979
-T2=2017
-phe=c(T1:T2)
-phe=as.data.frame(phe)
-phe$phes=NA
-for(i in T1:T2){
-  apus=Halias[which(Halias$Year==i & Halias$Species_Abb==as.character(psp) & Halias$Day.of.Year<168),]
+#psp="SYLBOR"
+#T1=1979
+#T2=2017
+#phe=c(T1:T2)
+#phe=as.data.frame(phe)
+#phe$phes=NA
+#for(i in T1:T2){
+#  apus=Halias[which(Halias$Year==i & Halias$Species_Abb==as.character(psp) & Halias$Day.of.Year<168),]
   #apua=Halias[which(Halias$Year==i & Halias$Species_Abb==as.character(psp) & Halias$Day.of.Year>183),]
-  if(nrow(apus)>4 & sum(as.numeric(sum(apus$Local)+sum(apus$Migr)))>20){
-    apus$phe=NA
-    apus$N=NA
-  for(j in 1:nrow(apus)){
-    
-    apus$phe[j]=(sum(apus$Local[1:j])+sum(apus$Migr[1:j]))/(sum(apus$Local)+sum(apus$Migr))
-    
-    }
-  phe$phes[i-T1+1]=apus$Day.of.Year[min(which(apus$phe>=0.5))]
-  
-  }
-  phe$N[i-T1+1]=sum(apus$Local)+sum(apus$Migr)
-}
+#  if(nrow(apus)>4 & sum(as.numeric(sum(apus$Local)+sum(apus$Migr)))>20){
+#    apus$phe=NA
+#    apus$N=NA
+#  for(j in 1:nrow(apus)){
+#    
+#    apus$phe[j]=(sum(apus$Local[1:j])+sum(apus$Migr[1:j]))/(sum(apus$Local)+sum(apus$Migr))
+#    
+#    }
+#  phe$phes[i-T1+1]=apus$Day.of.Year[min(which(apus$phe>=0.5))]
+#  
+#  }
+#  phe$N[i-T1+1]=sum(apus$Local)+sum(apus$Migr)
+#}
 
 
 
