@@ -3,11 +3,12 @@ library(skimr)
 # Haliasaineisto
 
 # Haetaan varsinainen aineiston csv-tiedosto / choose the csv-file
-Halias <- read.csv(file.choose(), fileEncoding="macintosh") # Haliasdata_v1.1.csv
+Halias <- read.csv("data/1.1/Haliasdata_v1.1.csv", 
+                   fileEncoding = "macintosh") # Haliasdata_v1.1.csv
 skimr::skim(Halias) # aineiston rakenne / structure of the data
 
 # Haetaan lajeista ja niiden lisätiedoista koostuva tiedosto
-Halias_sp=read.csv(file.choose()) # Halias_sp_v1.2.csv
+Halias_sp <- read.csv("data/1.1/Halias_sp_v1.2.csv") # Halias_sp_v1.2.csv
 #sp_species=unique(as.character(Halias_sp[which(Halias_sp$Sp==0),5]))
 
 #sp_species=as.data.frame(sp_species)
@@ -18,7 +19,7 @@ Halias_sp=read.csv(file.choose()) # Halias_sp_v1.2.csv
 #}
 
 # Haetaan tiedosto, jossa kerrottu mihin lajeihin lajilleen määrittämättömät taksonit voidaan yhdistää
-sp_species=read.csv(file.choose()) # Sp_species_1.1.csv
+sp_species <- read.csv("data/1.1/Sp_species_1.1.csv") # Sp_species_1.1.csv
   
 Halias$spLocal=Halias$Local
 Halias$spMigr=Halias$Migr
