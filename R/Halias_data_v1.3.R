@@ -1,9 +1,10 @@
 library(tidyverse)
+library(skimr)
 # Haliasaineisto
 
 # Haetaan varsinainen aineiston csv-tiedosto / choose the csv-file
 Halias <- read.csv(file.choose(), fileEncoding="macintosh") # Haliasdata_v1.1.csv
-str(Halias) # aineiston rakenne / structure of the data
+skimr::skim(Halias) # aineiston rakenne / structure of the data
 
 # Haetaan lajeista ja niiden lisätiedoista koostuva tiedosto
 Halias_sp=read.csv(file.choose()) # Halias_sp_v1.2.csv
