@@ -30,7 +30,7 @@ Halias$spStand <- Halias$Stand
 # Halias$Migr=Halias$spMigr
 # Halias$Local=Halias$spLocal
 
-taxon <- unique(as.character(sp_species$Taxon))
+taxa <- unique(as.character(sp_species$Taxon))
 
 # taxN=data.frame(taxon)
 # for(i in 1:length(taxon)){
@@ -44,25 +44,33 @@ taxon <- unique(as.character(sp_species$Taxon))
 # Set up the progress bar
 pb <- progress::progress_bar$new(
   format = "  processing :taxon [:bar] :percent in :elapsed",
-  total = length(taxon), clear = FALSE, width = 60)
+  total = length(taxa), clear = FALSE, width = 60, force = TRUE)
 
-for (i in 1:length(taxon)) {
+pb$tick(0)
 
-  pb$tick(tokens = list(taxon = paste0(taxon[i], "  ")))
+for (i in 1:length(taxa)) {
+
+  pb$tick(tokens = list(taxon = paste0(taxa[i], "  ")))
   
-  apu <- sp_species[which(sp_species$Taxon == taxon[i]), ]
+  apu <- sp_species %>% 
+    filter(Taxon == taxa[i])
 
-  sp_loc <- Halias[which(Halias$Species_Abb == taxon[i] & Halias$Local > 0), ]
-  sp_mig <- Halias[which(Halias$Species_Abb == taxon[i] & Halias$Migr > 0), ]
-
+  sp_loc <- Halias %>% 
+    filter(Species_Abb == taxa[i] & Local > 0)
+  
+  sp_mig <- Halias %>% 
+    filter(Species_Abb == taxa[i] & Migr > 0)
+  
   # Jos kyseisen taksonin havaintojen jakaminen riippuu vuodenajasta ja jaettavia lajeja on useita
   if (length(unique(apu$Date1)) > 1 & length(unique(apu$Species)) > 1) {
     if (nrow(sp_loc) > 0) {
       # käydään kaikki paikallishavikset läpi
       for (h in 1:nrow(sp_loc)) {
-        # for(h in 1:1){
 
-        apup <- sp_species[which(sp_species$Taxon == taxon[i] & sp_species$Date1 <= sp_loc$Day.of.Year[h] & sp_species$Date2 >= sp_loc$Day.of.Year[h]), ]
+        day_of_year <- sp_loc$Day.of.Year[h]
+        
+        apup <- sp_species[which(sp_species$Taxon == taxa[i] & sp_species$Date1 <= sp_loc$Day.of.Year[h] & 
+                                   sp_species$Date2 >= sp_loc$Day.of.Year[h]), ]
 
         # jos jaettavia lajeja on vain yksi tässä vuodenaikaisjaksossa (esim. V -> clahye loppusyksystä)
         if (length(unique(apup$Species)) == 1) {
@@ -126,7 +134,7 @@ for (i in 1:length(taxon)) {
     for (h in 1:nrow(sp_mig)) {
       # for(h in 1:1){
 
-      apum <- sp_species[which(sp_species$Taxon == taxon[i] & sp_species$Date1 <= sp_mig$Day.of.Year[h] & sp_species$Date2 >= sp_mig$Day.of.Year[h]), ]
+      apum <- sp_species[which(sp_species$Taxon == taxa[i] & sp_species$Date1 <= sp_mig$Day.of.Year[h] & sp_species$Date2 >= sp_mig$Day.of.Year[h]), ]
 
       # jos jaettavia lajeja on vain yksi tässä vuodenaikaisjaksossa (esim. V -> clahye loppusyksystä)
       if (length(unique(apum$Species)) == 1) {
@@ -196,11 +204,8 @@ for (i in 1:length(taxon)) {
         }
       }
     }
-
-
     # Jos jaettavat lajit ovat samat koko vuoden ajan
   } else if (length(unique(apu$Date1)) == 1) {
-
     # jos jaettavia lajeja on vain yksi (esim. strepto -> strtur )
     if (length(unique(apu$Species)) == 1) {
       if (nrow(sp_loc) > 0) {
@@ -256,16 +261,14 @@ for (i in 1:length(taxon)) {
       if (nrow(sp_loc) > 0) {
         # käydään kaikki paikallishavikset läpi
         for (h in 1:nrow(sp_loc)) {
-          # for(h in 147:147){
-
           # lasketaan kunkin jaettavan lajin runsaus lähipäivinä (painotettu keskiarvo)
           for (l in 1:nrow(apu)) {
-            # for(l in 1:1){
+            
             apu$sum[l] <- sum(sum(Halias[which(Halias$Species_Abb == as.character(apu$Species[l]) & Halias$Day.of.Year == sp_loc$Day.of.Year[h] - 2 & Halias$Year == sp_loc$Year[h]), 16]) +
-              sum(Halias[which(Halias$Species_Abb == as.character(apu$Species[l]) & Halias$Day.of.Year == sp_loc$Day.of.Year[h] - 1 & Halias$Year == sp_loc$Year[h]), 16]) * 2 +
-              sum(Halias[which(Halias$Species_Abb == as.character(apu$Species[l]) & Halias$Day.of.Year == sp_loc$Day.of.Year[h] & Halias$Year == sp_loc$Year[h]), 16]) * 3 +
-              sum(Halias[which(Halias$Species_Abb == as.character(apu$Species[l]) & Halias$Day.of.Year == sp_loc$Day.of.Year[h] + 1 & Halias$Year == sp_loc$Year[h]), 16]) * 2 +
-              sum(Halias[which(Halias$Species_Abb == as.character(apu$Species[l]) & Halias$Day.of.Year == sp_loc$Day.of.Year[h] + 2 & Halias$Year == sp_loc$Year[h]), 16])) / 9
+                              sum(Halias[which(Halias$Species_Abb == as.character(apu$Species[l]) & Halias$Day.of.Year == sp_loc$Day.of.Year[h] - 1 & Halias$Year == sp_loc$Year[h]), 16]) * 2 +
+                              sum(Halias[which(Halias$Species_Abb == as.character(apu$Species[l]) & Halias$Day.of.Year == sp_loc$Day.of.Year[h] & Halias$Year == sp_loc$Year[h]), 16]) * 3 +
+                              sum(Halias[which(Halias$Species_Abb == as.character(apu$Species[l]) & Halias$Day.of.Year == sp_loc$Day.of.Year[h] + 1 & Halias$Year == sp_loc$Year[h]), 16]) * 2 +
+                              sum(Halias[which(Halias$Species_Abb == as.character(apu$Species[l]) & Halias$Day.of.Year == sp_loc$Day.of.Year[h] + 2 & Halias$Year == sp_loc$Year[h]), 16])) / 9
           }
           # jos edes jostakin jaettavasta lajista on havainto lähipäiviltä
           if (sum(apu$sum > 0)) {
@@ -364,11 +367,13 @@ sp <- c("SOMMOL")
 
 Halias_SP <- Halias_sp[which(Halias_sp$Sp == 1), ]
 
+  
 Halias$Additional <- as.numeric(Halias$Additional)
 
 # Haliasvali <- Halias[which(Halias$Additional==0),]
 Haliasvali <- Halias[which(Halias$Additional > 0 & Halias$Species_code > 469), ]
 Haliasvali$lisaP <- Haliasvali$spLocal + Haliasvali$Additional
+
 Haliasvali2 <- Halias[which(is.na(Halias$Additional == TRUE)), ]
 Haliasvali2$lisaP <- Haliasvali2$Local
 Halias <- rbind(Haliasvali, Haliasvali2)
@@ -380,7 +385,6 @@ Haliasvali$lisaM <- Haliasvali$spMigr + Haliasvali$Night_migr
 Haliasvali2 <- Halias[which(is.na(Halias$Night_migr == TRUE)), ]
 Haliasvali2$lisaM <- NA
 Halias <- rbind(Haliasvali, Haliasvali2)
-
 
 trend <- list()
 spring <- matrix(NA, nrow = 0, ncol = 2)
@@ -657,7 +661,7 @@ for (l in 1:nrow(Halias_SP)) {
 
   spSCI <- unique(Halias[which(Halias$Species_Abb == sp), 4])
 
-  root <- paste("/Users/aleksilehikoinen/R/Halias/", sp, ".pdf", sep = "")
+  root <- paste("figs/", sp, ".pdf", sep = "")
 
   pdf(file = root)
 
