@@ -343,6 +343,8 @@ for (i in 1:length(taxon)) {
   }
 }
 
+save(Halias, file = "data/processed_Halias.RData")
+
 # Valitse laji ja kirjoita sen lyhenne lainausmerkkien sisään (tässä telkkä BUCCLA).
 # Choose a species and write it's abbreviation between the quotation marks (here common goldeneye BUCCLA).
 sp <- c("SOMMOL")
