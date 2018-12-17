@@ -6,8 +6,13 @@ library(scales)
 library(shinydashboard)
 library(tidyr)
 
-load("shiny/sp_yearly.RData")
-spps <- Hmisc::capitalize(sort(unique(dat$sp)))
+load("sp_yearly_1_2.RData")
+
+# Read species definition data
+sp_data <- readr::read_csv("../data/1.1/Halias_sp_v1.2.csv") %>% 
+  dplyr::arrange(Species_code)
+
+spps <- sp_data$Sci_name
 
 ui <- dashboardPage(
   dashboardHeader(title = "Halias observations"),
@@ -46,23 +51,26 @@ server <- function(input, output) {
   
   output$plot1 <- renderPlot({
     
-    sp_name <- tolower(input$selector)
+    sp_current <- sp_data %>% 
+      dplyr::filter(Sci_name == input$selector)
+
+    sp_name <- sp_current$Sci_name
     
-    sp_dat <- dat %>% 
-      dplyr::filter(sp == sp_name)  
-    
+    obs_current <- dat %>% 
+      dplyr::filter(sp == sp_current$Species_Abb)
+      
     # Make a subselectiong of the data containing two different epochs:
     # 1979-1999 and 2009-
-    epochs <- sp_dat %>% 
+    epochs <- obs_current %>% 
       dplyr::select(day, begin, end) %>% 
       tidyr::gather(variable, value, -day)
     
-    p1 <- ggplot(sp_dat, aes(x = day, y = paik)) +
+    p1 <- ggplot(obs_current, aes(x = day, y = paik)) +
       geom_line() + xlab("Day of Year") + ylab("Yks./pvm - Ind./day") +
       ggtitle(paste0(sp_name, ", Paikalliset / Lokal / Locals")) + 
       scale_x_date(labels = date_format('%e %b')) + theme_bw()
     
-    p2 <- ggplot(sp_dat, aes(x = day, y = muutto)) +
+    p2 <- ggplot(obs_current, aes(x = day, y = muutto)) +
       geom_line() + xlab("Day of Year") + ylab("Yks./pvm - Ind./day") +
       ggtitle(paste0(sp_name, ", Muuttavat / Flyttande / Migrants")) + 
       scale_x_date(labels = date_format('%e %b')) + theme_bw()
