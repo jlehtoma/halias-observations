@@ -393,7 +393,7 @@ colnames(spring) <- c("sp", "date")
 autumn <- matrix(NA, nrow = 0, ncol = 2)
 colnames(autumn) <- c("sp", "date")
 
-setwd("/users/aleksilehikoinen/R/Halias")
+#setwd("/users/aleksilehikoinen/R/Halias")
 
 
 for (l in 1:nrow(Halias_SP)) {
@@ -656,165 +656,163 @@ for (l in 1:nrow(Halias_SP)) {
 
     autumn <- rbind(autumn, aphen)
   }
-
-
-
+  
   spSCI <- unique(Halias[which(Halias$Species_Abb == sp), 4])
 
-  root <- paste("figs/", sp, ".pdf", sep = "")
-
-  pdf(file = root)
-
-  par(mfrow = c(3, 1))
-
-  plot(phen$day, phen$paik,
-    type = "l", main = paste(spSCI, ", Paikalliset / Stationära / Locals", sep = ""),
-    xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
-  )
-  plot(phen$day, phen$muutto,
-    type = "l", main = "Muuttavat / Flyttande / Migrants",
-    xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
-  )
-
-  apuphen <- which(phen$begin > -1)
-
-  if (max(phen$begin[apuphen], na.rm = TRUE) > max(phen$end[apuphen], na.rm = TRUE) & max(phen$begin[apuphen], na.rm = TRUE) > max(phen$med[apuphen], na.rm = TRUE) & sum(phen[which(phen$med > 0), 11]) > 0) {
-    plot(phen$day, phen$begin,
-      col = "blue", type = "l",
-      main = paste("Runsauden muutos / Förändring i antal / Change in abundance long ",
-        round((N$end / N$begin - 1) * 100), "%, short ", round((N$end / N$med - 1) * 100), "%",
-        sep = ""
-      ),
-      xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
-    )
-    lines(phen$day, phen$end, col = "red")
-    lines(phen$day, phen$med, col = "cyan")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$begin[apuphen]) * 0.95, alku, col = "blue")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$begin[apuphen]) * 0.83, keski, col = "cyan")
-    text(as.Date(23.5, origin = "2000-01-01"), max(phen$begin[apuphen]) * 0.71, loppu, col = "red")
-  } else if (max(phen$begin[apuphen], na.rm = TRUE) > max(phen$end[apuphen], na.rm = TRUE) & max(phen$begin[apuphen], na.rm = TRUE) > max(phen$med[apuphen], na.rm = TRUE) & sum(phen[which(phen$med > 0), 11]) == 0) {
-    plot(phen$day, phen$begin,
-      col = "blue", type = "l",
-      main = paste("Runsauden muutos / Förändring i antal / Change in abundance long ",
-        round((N$end / N$begin - 1) * 100), "%",
-        sep = ""
-      ),
-      xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
-    )
-    lines(phen$day, phen$end, col = "red")
-    lines(phen$day, phen$med, col = "cyan")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$begin[apuphen]) * 0.95, alku, col = "blue")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$begin[apuphen]) * 0.83, keski, col = "cyan")
-    text(as.Date(23.5, origin = "2000-01-01"), max(phen$begin[apuphen]) * 0.71, loppu, col = "red")
-  } else if (max(phen$begin[apuphen], na.rm = TRUE) > max(phen$end[apuphen], na.rm = TRUE) & max(phen$begin[apuphen], na.rm = TRUE) < max(phen$med[apuphen], na.rm = TRUE) & sum(phen[which(phen$begin > 0), 10]) > 0) {
-    plot(phen$day, phen$med,
-      col = "cyan", type = "l",
-      main = paste("Runsauden muutos / Förändring i antal / Change in abundance long ",
-        round((N$end / N$begin - 1) * 100), "%, short ", round((N$end / N$med - 1) * 100), "%",
-        sep = ""
-      ),
-      xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
-    )
-    lines(phen$day, phen$begin, col = "blue")
-    lines(phen$day, phen$end, col = "red")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.95, alku, col = "blue")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.83, keski, col = "cyan")
-    text(as.Date(23.5, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.71, loppu, col = "red")
-  } else if (max(phen$end[apuphen], na.rm = TRUE) < max(phen$med[apuphen], na.rm = TRUE) & max(phen$begin[apuphen], na.rm = TRUE) < max(phen$med[apuphen], na.rm = TRUE) & sum(phen[which(phen$begin > 0), 10]) > 0) {
-    plot(phen$day, phen$med,
-      col = "cyan", type = "l",
-      main = paste("Runsauden muutos / Förändring i antal / Change in abundance long ",
-        round((N$end / N$begin - 1) * 100), "%, short ", round((N$end / N$med - 1) * 100), "%",
-        sep = ""
-      ),
-      xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
-    )
-    lines(phen$day, phen$begin, col = "blue")
-    lines(phen$day, phen$end, col = "red")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.95, alku, col = "blue")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.83, keski, col = "cyan")
-    text(as.Date(23.5, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.71, loppu, col = "red")
-  } else if (max(phen$begin[apuphen], na.rm = TRUE) < max(phen$med[apuphen], na.rm = TRUE) & max(phen$end[apuphen], na.rm = TRUE) < max(phen$begin[apuphen], na.rm = TRUE)) {
-    plot(phen$day, phen$med,
-      col = "cyan", type = "l",
-      main = paste("Runsauden muutos / Förändring i antal / Change in abundance long ",
-        round((N$end / N$begin - 1) * 100), "%, short ", round((N$end / N$med - 1) * 100), "%",
-        sep = ""
-      ),
-      xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
-    )
-    lines(phen$day, phen$begin, col = "blue")
-    lines(phen$day, phen$end, col = "red")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.95, alku, col = "blue")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.83, keski, col = "cyan")
-    text(as.Date(23.5, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.71, loppu, col = "red")
-  } else if (max(phen$med[apuphen], na.rm = TRUE) < max(phen$end[apuphen], na.rm = TRUE) & max(phen$begin[apuphen], na.rm = TRUE) < max(phen$end[apuphen], na.rm = TRUE) & sum(phen[which(phen$begin > 0), 10]) > 0 & sum(phen[which(phen$med > 0), 11]) > 0) {
-    plot(phen$day, phen$end,
-      col = "red", type = "l",
-      main = paste("Runsauden muutos / Förändring i antal / Change in abundance long ", round((N$end / N$begin - 1) * 100), "%, short ", round((N$end / N$med - 1) * 100), "%", sep = ""),
-      xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
-    )
-    lines(phen$day, phen$begin, col = "blue")
-    lines(phen$day, phen$med, col = "cyan")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.95, alku, col = "blue")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.83, keski, col = "cyan")
-    text(as.Date(23.5, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.71, loppu, col = "red")
-  } else if (max(phen$med[apuphen], na.rm = TRUE) < max(phen$end[apuphen], na.rm = TRUE) & max(phen$begin[apuphen], na.rm = TRUE) < max(phen$end[apuphen], na.rm = TRUE) & sum(phen[which(phen$begin > 0), 10]) > 0 & sum(phen[which(phen$med > 0), 11]) == 0) {
-    plot(phen$day, phen$end,
-      col = "red", type = "l",
-      main = paste("Runsauden muutos / Förändring i antal / Change in abundance long ", round((N$end / N$begin - 1) * 100), "%", sep = ""),
-      xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
-    )
-    lines(phen$day, phen$begin, col = "blue")
-    lines(phen$day, phen$med, col = "cyan")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.95, alku, col = "blue")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.83, keski, col = "cyan")
-    text(as.Date(23.5, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.71, loppu, col = "red")
-  }
-
-  else if (max(phen$med[apuphen], na.rm = TRUE) < max(phen$end[apuphen], na.rm = TRUE) & max(phen$begin[apuphen], na.rm = TRUE) < max(phen$end[apuphen], na.rm = TRUE) & sum(phen[which(phen$begin > 0), 10]) == 0 & sum(phen[which(phen$med > 0), 11]) == 0) {
-    plot(phen$day, phen$end,
-      col = "red", type = "l", main = "Runsauden muutos / Förändring i antal / Change in abundance",
-      xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
-    )
-    lines(phen$day, phen$begin, col = "blue")
-    lines(phen$day, phen$med, col = "cyan")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.95, alku, col = "blue")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.83, keski, col = "cyan")
-    text(as.Date(23.5, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.71, loppu, col = "red")
-  } else if (max(phen$med[apuphen], na.rm = TRUE) < max(phen$end[apuphen], na.rm = TRUE) & max(phen$begin[apuphen], na.rm = TRUE) < max(phen$end[apuphen], na.rm = TRUE) & sum(phen[which(phen$begin > 0), 10]) == 0 & sum(phen[which(phen$med > 0), 11]) > 0) {
-    plot(phen$day, phen$end,
-      col = "red", type = "l", main = paste("Runsauden muutos / Förändring i antal / Change in abundance short ", round((N$end / N$med - 1) * 100), "%", sep = ""),
-      xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
-    )
-    lines(phen$day, phen$begin, col = "blue")
-    lines(phen$day, phen$med, col = "cyan")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.95, alku, col = "blue")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.83, keski, col = "cyan")
-    text(as.Date(23.5, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.71, loppu, col = "red")
-  } else if (max(phen$med[apuphen], na.rm = TRUE) > max(phen$end[apuphen], na.rm = TRUE) & max(phen$begin[apuphen], na.rm = TRUE) < max(phen$end[apuphen], na.rm = TRUE) & sum(phen[which(phen$begin > 0), 10]) == 0) {
-    plot(phen$day, phen$med,
-      col = "cyan", type = "l", main = paste("Runsauden muutos / Förändring i antal / Change in abundance short ", round((N$end / N$med - 1) * 100), "%", sep = ""),
-      xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
-    )
-    lines(phen$day, phen$begin, col = "blue")
-    lines(phen$day, phen$end, col = "red")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.95, alku, col = "blue")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.83, keski, col = "cyan")
-    text(as.Date(23.5, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.71, loppu, col = "red")
-  } else if (max(phen$med[apuphen], na.rm = TRUE) > max(phen$end[apuphen], na.rm = TRUE) & max(phen$begin[apuphen], na.rm = TRUE) == max(phen$end[apuphen], na.rm = TRUE) & sum(phen[which(phen$begin > 0), 10]) == 0) {
-    plot(phen$day, phen$med,
-      col = "cyan", type = "l", main = paste("Runsauden muutos / Förändring i antal / Change in abundance short ", round((N$end / N$med - 1) * 100), "%", sep = ""),
-      xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
-    )
-    lines(phen$day, phen$begin, col = "blue")
-    lines(phen$day, phen$end, col = "red")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.95, alku, col = "blue")
-    text(as.Date(30, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.83, keski, col = "cyan")
-    text(as.Date(23.5, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.71, loppu, col = "red")
-  }
-
-  dev.off()
+  # root <- paste("figs/", sp, ".pdf", sep = "")
+  # 
+  # pdf(file = root)
+  # 
+  # par(mfrow = c(3, 1))
+  # 
+  # plot(phen$day, phen$paik,
+  #   type = "l", main = paste(spSCI, ", Paikalliset / Stationära / Locals", sep = ""),
+  #   xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
+  # )
+  # plot(phen$day, phen$muutto,
+  #   type = "l", main = "Muuttavat / Flyttande / Migrants",
+  #   xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
+  # )
+  # 
+  # apuphen <- which(phen$begin > -1)
+  # 
+  # if (max(phen$begin[apuphen], na.rm = TRUE) > max(phen$end[apuphen], na.rm = TRUE) & max(phen$begin[apuphen], na.rm = TRUE) > max(phen$med[apuphen], na.rm = TRUE) & sum(phen[which(phen$med > 0), 11]) > 0) {
+  #   plot(phen$day, phen$begin,
+  #     col = "blue", type = "l",
+  #     main = paste("Runsauden muutos / Förändring i antal / Change in abundance long ",
+  #       round((N$end / N$begin - 1) * 100), "%, short ", round((N$end / N$med - 1) * 100), "%",
+  #       sep = ""
+  #     ),
+  #     xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
+  #   )
+  #   lines(phen$day, phen$end, col = "red")
+  #   lines(phen$day, phen$med, col = "cyan")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$begin[apuphen]) * 0.95, alku, col = "blue")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$begin[apuphen]) * 0.83, keski, col = "cyan")
+  #   text(as.Date(23.5, origin = "2000-01-01"), max(phen$begin[apuphen]) * 0.71, loppu, col = "red")
+  # } else if (max(phen$begin[apuphen], na.rm = TRUE) > max(phen$end[apuphen], na.rm = TRUE) & max(phen$begin[apuphen], na.rm = TRUE) > max(phen$med[apuphen], na.rm = TRUE) & sum(phen[which(phen$med > 0), 11]) == 0) {
+  #   plot(phen$day, phen$begin,
+  #     col = "blue", type = "l",
+  #     main = paste("Runsauden muutos / Förändring i antal / Change in abundance long ",
+  #       round((N$end / N$begin - 1) * 100), "%",
+  #       sep = ""
+  #     ),
+  #     xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
+  #   )
+  #   lines(phen$day, phen$end, col = "red")
+  #   lines(phen$day, phen$med, col = "cyan")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$begin[apuphen]) * 0.95, alku, col = "blue")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$begin[apuphen]) * 0.83, keski, col = "cyan")
+  #   text(as.Date(23.5, origin = "2000-01-01"), max(phen$begin[apuphen]) * 0.71, loppu, col = "red")
+  # } else if (max(phen$begin[apuphen], na.rm = TRUE) > max(phen$end[apuphen], na.rm = TRUE) & max(phen$begin[apuphen], na.rm = TRUE) < max(phen$med[apuphen], na.rm = TRUE) & sum(phen[which(phen$begin > 0), 10]) > 0) {
+  #   plot(phen$day, phen$med,
+  #     col = "cyan", type = "l",
+  #     main = paste("Runsauden muutos / Förändring i antal / Change in abundance long ",
+  #       round((N$end / N$begin - 1) * 100), "%, short ", round((N$end / N$med - 1) * 100), "%",
+  #       sep = ""
+  #     ),
+  #     xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
+  #   )
+  #   lines(phen$day, phen$begin, col = "blue")
+  #   lines(phen$day, phen$end, col = "red")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.95, alku, col = "blue")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.83, keski, col = "cyan")
+  #   text(as.Date(23.5, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.71, loppu, col = "red")
+  # } else if (max(phen$end[apuphen], na.rm = TRUE) < max(phen$med[apuphen], na.rm = TRUE) & max(phen$begin[apuphen], na.rm = TRUE) < max(phen$med[apuphen], na.rm = TRUE) & sum(phen[which(phen$begin > 0), 10]) > 0) {
+  #   plot(phen$day, phen$med,
+  #     col = "cyan", type = "l",
+  #     main = paste("Runsauden muutos / Förändring i antal / Change in abundance long ",
+  #       round((N$end / N$begin - 1) * 100), "%, short ", round((N$end / N$med - 1) * 100), "%",
+  #       sep = ""
+  #     ),
+  #     xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
+  #   )
+  #   lines(phen$day, phen$begin, col = "blue")
+  #   lines(phen$day, phen$end, col = "red")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.95, alku, col = "blue")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.83, keski, col = "cyan")
+  #   text(as.Date(23.5, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.71, loppu, col = "red")
+  # } else if (max(phen$begin[apuphen], na.rm = TRUE) < max(phen$med[apuphen], na.rm = TRUE) & max(phen$end[apuphen], na.rm = TRUE) < max(phen$begin[apuphen], na.rm = TRUE)) {
+  #   plot(phen$day, phen$med,
+  #     col = "cyan", type = "l",
+  #     main = paste("Runsauden muutos / Förändring i antal / Change in abundance long ",
+  #       round((N$end / N$begin - 1) * 100), "%, short ", round((N$end / N$med - 1) * 100), "%",
+  #       sep = ""
+  #     ),
+  #     xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
+  #   )
+  #   lines(phen$day, phen$begin, col = "blue")
+  #   lines(phen$day, phen$end, col = "red")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.95, alku, col = "blue")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.83, keski, col = "cyan")
+  #   text(as.Date(23.5, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.71, loppu, col = "red")
+  # } else if (max(phen$med[apuphen], na.rm = TRUE) < max(phen$end[apuphen], na.rm = TRUE) & max(phen$begin[apuphen], na.rm = TRUE) < max(phen$end[apuphen], na.rm = TRUE) & sum(phen[which(phen$begin > 0), 10]) > 0 & sum(phen[which(phen$med > 0), 11]) > 0) {
+  #   plot(phen$day, phen$end,
+  #     col = "red", type = "l",
+  #     main = paste("Runsauden muutos / Förändring i antal / Change in abundance long ", round((N$end / N$begin - 1) * 100), "%, short ", round((N$end / N$med - 1) * 100), "%", sep = ""),
+  #     xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
+  #   )
+  #   lines(phen$day, phen$begin, col = "blue")
+  #   lines(phen$day, phen$med, col = "cyan")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.95, alku, col = "blue")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.83, keski, col = "cyan")
+  #   text(as.Date(23.5, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.71, loppu, col = "red")
+  # } else if (max(phen$med[apuphen], na.rm = TRUE) < max(phen$end[apuphen], na.rm = TRUE) & max(phen$begin[apuphen], na.rm = TRUE) < max(phen$end[apuphen], na.rm = TRUE) & sum(phen[which(phen$begin > 0), 10]) > 0 & sum(phen[which(phen$med > 0), 11]) == 0) {
+  #   plot(phen$day, phen$end,
+  #     col = "red", type = "l",
+  #     main = paste("Runsauden muutos / Förändring i antal / Change in abundance long ", round((N$end / N$begin - 1) * 100), "%", sep = ""),
+  #     xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
+  #   )
+  #   lines(phen$day, phen$begin, col = "blue")
+  #   lines(phen$day, phen$med, col = "cyan")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.95, alku, col = "blue")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.83, keski, col = "cyan")
+  #   text(as.Date(23.5, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.71, loppu, col = "red")
+  # }
+  # 
+  # else if (max(phen$med[apuphen], na.rm = TRUE) < max(phen$end[apuphen], na.rm = TRUE) & max(phen$begin[apuphen], na.rm = TRUE) < max(phen$end[apuphen], na.rm = TRUE) & sum(phen[which(phen$begin > 0), 10]) == 0 & sum(phen[which(phen$med > 0), 11]) == 0) {
+  #   plot(phen$day, phen$end,
+  #     col = "red", type = "l", main = "Runsauden muutos / Förändring i antal / Change in abundance",
+  #     xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
+  #   )
+  #   lines(phen$day, phen$begin, col = "blue")
+  #   lines(phen$day, phen$med, col = "cyan")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.95, alku, col = "blue")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.83, keski, col = "cyan")
+  #   text(as.Date(23.5, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.71, loppu, col = "red")
+  # } else if (max(phen$med[apuphen], na.rm = TRUE) < max(phen$end[apuphen], na.rm = TRUE) & max(phen$begin[apuphen], na.rm = TRUE) < max(phen$end[apuphen], na.rm = TRUE) & sum(phen[which(phen$begin > 0), 10]) == 0 & sum(phen[which(phen$med > 0), 11]) > 0) {
+  #   plot(phen$day, phen$end,
+  #     col = "red", type = "l", main = paste("Runsauden muutos / Förändring i antal / Change in abundance short ", round((N$end / N$med - 1) * 100), "%", sep = ""),
+  #     xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
+  #   )
+  #   lines(phen$day, phen$begin, col = "blue")
+  #   lines(phen$day, phen$med, col = "cyan")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.95, alku, col = "blue")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.83, keski, col = "cyan")
+  #   text(as.Date(23.5, origin = "2000-01-01"), max(phen$end[apuphen]) * 0.71, loppu, col = "red")
+  # } else if (max(phen$med[apuphen], na.rm = TRUE) > max(phen$end[apuphen], na.rm = TRUE) & max(phen$begin[apuphen], na.rm = TRUE) < max(phen$end[apuphen], na.rm = TRUE) & sum(phen[which(phen$begin > 0), 10]) == 0) {
+  #   plot(phen$day, phen$med,
+  #     col = "cyan", type = "l", main = paste("Runsauden muutos / Förändring i antal / Change in abundance short ", round((N$end / N$med - 1) * 100), "%", sep = ""),
+  #     xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
+  #   )
+  #   lines(phen$day, phen$begin, col = "blue")
+  #   lines(phen$day, phen$end, col = "red")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.95, alku, col = "blue")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.83, keski, col = "cyan")
+  #   text(as.Date(23.5, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.71, loppu, col = "red")
+  # } else if (max(phen$med[apuphen], na.rm = TRUE) > max(phen$end[apuphen], na.rm = TRUE) & max(phen$begin[apuphen], na.rm = TRUE) == max(phen$end[apuphen], na.rm = TRUE) & sum(phen[which(phen$begin > 0), 10]) == 0) {
+  #   plot(phen$day, phen$med,
+  #     col = "cyan", type = "l", main = paste("Runsauden muutos / Förändring i antal / Change in abundance short ", round((N$end / N$med - 1) * 100), "%", sep = ""),
+  #     xlab = "Day of Year", ylab = "Yks./pvm - Ind./day"
+  #   )
+  #   lines(phen$day, phen$begin, col = "blue")
+  #   lines(phen$day, phen$end, col = "red")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.95, alku, col = "blue")
+  #   text(as.Date(30, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.83, keski, col = "cyan")
+  #   text(as.Date(23.5, origin = "2000-01-01"), max(phen$med[apuphen]) * 0.71, loppu, col = "red")
+  # }
+  # 
+  # dev.off()
 
   # Lajikohtaiset kannanmuutosprosentit
   if (N$begin > 0) {
