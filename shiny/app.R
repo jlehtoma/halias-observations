@@ -37,10 +37,14 @@ ui <- dashboardPage(
           )
         ),
         column(8,
-          box(
-            width = 12,
-            highchartOutput("hcontainer", height = "300px"))
+               box(
+                 width = 12,
+                 highchartOutput("migration", height = "300px"),
+               box(
+                 width = 12,
+                 highchartOutput("local", height = "300px"))
           )
+        )
       )
     )
   )
@@ -53,7 +57,31 @@ server <- function(input, output) {
           ". Additional info goes here.")
   })
   
-  output$hcontainer <- renderHighchart({
+  output$migration <- renderHighchart({
+    
+    sp_current <- sp_data %>% 
+      dplyr::filter(Sci_name == input$selector)
+    
+    sp_name <- sp_current$Sci_name
+    
+    obs_current <- dat %>% 
+      dplyr::filter(sp == sp_current$Species_Abb) 
+    
+    # Make a subselectiong of the data containing two different epochs:
+    # 1979-1999 and 2009-
+    epochs <- obs_current %>% 
+      dplyr::select(day, begin, end) %>% 
+      tidyr::gather(variable, value, -day)
+    #browser()
+    hc <- obs_current %>% 
+      hchart(type = "spline", 
+             hcaes(x = day, y = muutto),
+             color = c("#e5b13a", "#4bd5ee")) 
+    
+    return(hc)
+  })
+  
+  output$local <- renderHighchart({
     
     sp_current <- sp_data %>% 
       dplyr::filter(Sci_name == input$selector)
