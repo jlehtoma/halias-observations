@@ -395,14 +395,25 @@ colnames(autumn) <- c("sp", "date")
 
 #setwd("/users/aleksilehikoinen/R/Halias")
 
+# Collect the per-species phonology information in two lists
+all_phen <- list()
+all_N <- list()
+
+# Set up the progress bar
+pb <- progress::progress_bar$new(
+  format = "  processing :species [:bar] :percent in :elapsed",
+  total = nrow(Halias_SP), clear = FALSE, width = 60, force = TRUE)
+
+pb$tick(0)
 
 for (l in 1:nrow(Halias_SP)) {
-  # for(l in 1:1){
 
+  sp <- as.character(Halias_SP$Species_Abb[l])
+  
   # Valitse laji ja kirjoita se lainausmerkkien sisään (tässä tukkasotka AYTFUL).
   # Choose a species and write it between the quotation marks (here tufted duck AYTFUL).
-  sp <- as.character(Halias_SP$Species_Abb[l])
-
+  pb$tick(tokens = list(species = paste0(sp, "  ")))
+  
   # sp <- c("AEGCAU") # TÄHÄN KANNATTAA VALITA MAHDOLLISIMMAN RAFLAAVA LAJI
 
   # Jos lajin lisäpaikalliset soveltuu paikalliskuvaajaan niin käytetään myös lisäaluetta (rarit)
@@ -813,22 +824,40 @@ for (l in 1:nrow(Halias_SP)) {
   # }
   # 
   # dev.off()
-
+  phen$sp <- sp
+  all_phen[[sp]] <- phen
+  N$sp <- sp
+  all_N[[sp]] <- N
+  
   # Lajikohtaiset kannanmuutosprosentit
-  if (N$begin > 0) {
-    trend$sp[l] <- as.character(sp)
-    trend$slope[l] <- round((N$end / N$begin - 1) * 100)
-    trend$Nbegin[l] <- N$begin
-    trend$Nmed[l] <- N$med
-    trend$Nend[l] <- N$end
-    trend$NbeginS[l] <- sum(phen$begin[Halias_SP$SpB[l]:Halias_SP$SpE[l]], na.rm = TRUE)
-    trend$NmedS[l] <- sum(phen$med[Halias_SP$SpB[l]:Halias_SP$SpE[l]])
-    trend$NendS[l] <- sum(phen$end[Halias_SP$SpB[l]:Halias_SP$SpE[l]])
-    trend$NbeginA[l] <- sum(phen$begin[Halias_SP$AuB[l]:335], na.rm = TRUE)
-    trend$NmedA[l] <- sum(phen$med[Halias_SP$AuB[l]:335])
-    trend$NendA[l] <- sum(phen$end[Halias_SP$AuB[l]:335])
-  }
+  # if (N$begin > 0) {
+  #   trend$sp[l] <- as.character(sp)
+  #   trend$slope[l] <- round((N$end / N$begin - 1) * 100)
+  #   trend$Nbegin[l] <- N$begin
+  #   trend$Nmed[l] <- N$med
+  #   trend$Nend[l] <- N$end
+  #   trend$NbeginS[l] <- sum(phen$begin[Halias_SP$SpB[l]:Halias_SP$SpE[l]], na.rm = TRUE)
+  #   trend$NmedS[l] <- sum(phen$med[Halias_SP$SpB[l]:Halias_SP$SpE[l]])
+  #   trend$NendS[l] <- sum(phen$end[Halias_SP$SpB[l]:Halias_SP$SpE[l]])
+  #   trend$NbeginA[l] <- sum(phen$begin[Halias_SP$AuB[l]:335], na.rm = TRUE)
+  #   trend$NmedA[l] <- sum(phen$med[Halias_SP$AuB[l]:335])
+  #   trend$NendA[l] <- sum(phen$end[Halias_SP$AuB[l]:335])
+  # }
 }
+
+all_phen <- all_phen %>% 
+  dplyr::bind_rows(all_phen)
+
+dat <- all_phen
+
+all_N <- all_N %>% 
+  dplyr::bind_rows(all_N)
+
+all_N_unique <- all_N %>% 
+  dplyr::distinct()
+
+save(dat, file = "shiny/sp_yearly_1_2.RData")
+save(all_N_unique, file = "shiny/sp_periods.RData")
 
 # trend=as.data.frame(trend)
 # write.csv(trend,"Halias_trend20181205.csv")
